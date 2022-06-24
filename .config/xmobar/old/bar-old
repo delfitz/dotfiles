@@ -1,0 +1,82 @@
+Config { 
+	
+    -- general
+      position = TopH 33
+	, textOffset = - 10
+	, iconOffset = -1
+    , iconRoot = "."
+    , hideOnStart = False
+	, lowerOnStart = True
+    , persistent = True
+	, pickBroadest = False
+    , allDesktops = True
+	, overrideRedirect = True
+
+    -- appearance
+    , font = "xft:FiraCode Nerd Font:pixelsize=18:antialias=true:hinting=true"
+	, additionalFonts = []
+	, borderColor = "black"
+	, border = TopB
+	, bgColor = "black"
+	, fgColor = "grey"
+	, alpha = 100
+
+   -- layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = "%multicpu% | %coretemp% | %memory% | %dynnetwork% | %wlan0wi% }{ %KLGA% | %date%"
+
+
+   -- plugins 
+   , commands = 
+
+        -- weather monitor
+        [ Run Weather "KLGA" [ "--template", "KLGA <fc=#4682B4><tempC></fc>°C"
+                             ] 36000
+        
+--        , Run Wireless       "wlan0" []
+                            
+        -- network activity monitor (dynamic interface resolution)
+        , Run DynNetwork     [ "--template" , "<dev> <rx> <tx> KB"
+                             , "--ddigits"  , "1"
+                             , "--Low"      , "1"       -- units: B/s
+                             , "--High"     , "5000"       -- units: B/s
+                             , "--low"      , "grey"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- cpu activity monitor
+        , Run MultiCpu       [ "--template" , "CPU <fc=#3333dd><autovbar>%</fc> <total0>% <total1>%"
+                             , "--Low"      , "50"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "darkgreen"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkred"
+                             ] 10
+
+        -- cpu core temperature monitor
+        , Run CoreTemp       [ "--template" , "Temp: <core0>°C|<core1>°C"
+                             , "--Low"      , "70"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "darkgreen"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkred"
+                             ] 50
+                          
+        -- memory usage monitor
+        , Run Memory         [ "--template" ,"Mem <usedratio>%"
+                             , "--ddigits"  , "1"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "90"        -- units: %
+                             , "--low"      , "grey"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- time and date indicator 
+        --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+        , Run Date           "<fc=#ABABAB>%a %d-%b %H:%M </fc>" "date" 10
+
+        ]
+   }

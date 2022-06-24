@@ -1,0 +1,39 @@
+Config { 
+      position = BottomSize C 100 50
+	, textOffset = -1
+	, iconOffset = -1
+    , iconRoot = "."
+    , hideOnStart = False
+	, lowerOnStart = True
+    , persistent = True
+	, pickBroadest = False
+    , allDesktops = True
+	, overrideRedirect = True
+
+    , font = "xft:Hack Nerd Font Complete:size=18:weight=regular:slant=italic:antialias=true"
+    , additionalFonts = [ 
+                          "xft:Overpass Nerd Font Complete:size=14:weight=thin:slant=roman:antialias=true"
+                        , "xft:Overpass Nerd Font Complete:size=18:weight=thin:slant=roman:antialias=true"
+                        , "xft:Overpass Nerd Font Complete:size=20:weight=thin:slant=roman:antialias=true"
+                        , "xft:Overpass Nerd Font Complete:size=36:weight=thin:slant=roman:antialias=true"
+                        , "xft:Monoid Nerd Font:size=14:antialias=true" 
+                        , "xft:Monoid Nerd Font:size=18:antialias=true" 
+                        , "xft:Monoid Nerd Font:size=20:antialias=true" 
+                        , "xft:Monoid Nerd Font:size=36:antialias=true" 
+    ]
+
+	, borderColor = "black"
+	, border = NoBorder
+	, bgColor = "#292D3E"
+	, fgColor = "#8796B0"
+	, alpha = 220
+    , sepChar =  "%"   
+    , alignSep = "}{" 
+    , template = "  %mpstats%  %cpuprocs% }{ %vnstats%  "
+    , commands = 
+        [
+          Run PipeReader "waiting on MP Stats...:/tmp/perfpipe/mpstats-pipe" "mpstats"
+        , Run PipeReader "waiting on Procs...:/tmp/perfpipe/cpuprocs-pipe" "cpuprocs"
+        , Run PipeReader "waiting on Network...:/tmp/perfpipe/vnstats-pipe" "vnstats"
+    ]  
+}
